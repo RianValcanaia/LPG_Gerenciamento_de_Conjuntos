@@ -2,31 +2,66 @@
 #define FUNCOES_H
 
 void limpaTela (){
-    printf("\033[H\033[J");
+    #ifdef _WIN32
+        system("cls");   // Comando para Windows
+    #else
+        system("clear"); // Comando para Linux
+    #endif
 }
 
 void limpaBuffer(){
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
-
+  
 void telaInicial(){
     limpaTela();
-    printf("Bem vindo!!\n");
+    printf("\n");
+    printf("   _____ ____  _   _      _ _    _ _   _ _______ ____   _____ \n");
+    printf("  / ____/ __ \\| \\ | |    | | |  | | \\ | |__   __/ __ \\ / ____|\n");
+    printf(" | |   | |  | |  \\| |    | | |  | |  \\| |  | | | |  | | (___  \n");
+    printf(" | |   | |  | | . ` |_   | | |  | | . ` |  | | | |  | |\\___ \\ \n");
+    printf(" | |___| |__| | |\\  | |__| | |__| | |\\  |  | | | |__| |____) |\n");
+    printf("  \\_____\\____/|_| \\_|\\____/ \\____/|_| \\_|  |_|  \\____/|_____/ \n");
+    printf("                                                              \n");
+    printf("                                                              \n");
+    printf("Aperte enter para continuar.\n");
     getchar();
 }
 
 void menuInicial(){
-    printf("Menu:\n\n");
-    printf("[1] - Criar um novo conjunto vazio.\n");
-    printf("[2] - Inserir dados em um conjunto.\n");
-    printf("[3] - Remover um conjunto.\n");
-    printf("[4] - Fazer a uniao entre dois conjuntos.\n");
-    printf("[5] - Fazer a intersecao entre dois conjuntos.\n");
-    printf("[6] - Mostrar um conjunto.\n");
-    printf("[7] - Mostrar todos os conjuntos.\n");
-    printf("[8] - Busca por um valor.\n");
-    printf("[9] - Sair do programa.\n");
+    printf("MENU:\n\n");    
+    printf("1- Criar um novo conjunto vazio.\n");
+    printf("2- Inserir dados em um conjunto.\n");
+    printf("3- Remover um conjunto.\n");
+    printf("4- Fazer a uniao entre dois conjuntos.\n");
+    printf("5- Fazer a intersecao entre dois conjuntos.\n");
+    printf("6- Mostrar um conjunto.\n");
+    printf("7- Mostrar todos os conjuntos.\n");
+    printf("8- Busca por um valor.\n");
+    printf("9- Sair do programa.\n");
+    printf("\nDigite uma opcao: ");
+}
+
+int tamanho(int vetor[], int totalColunas){
+    int contador = 0;
+    for (int i = 0; vetor[i] != 0 && i < totalColunas; i++) contador++;
+    return contador;
+}
+
+void mostraMatriz(int qtLinhas, int qtColunas, int matriz[qtLinhas][qtColunas]){
+    for (int i = 0; i < qtLinhas; i++){
+        printf("Conjunto %i: ", i);
+        int eh_vazio = 1;
+        int tam = tamanho(matriz[i], qtColunas);
+        
+        for (int j = 0; matriz[i][j]!=0 && j < tam; j++){
+            eh_vazio = 0;
+            (j==0)? printf("{%d,", matriz[i][j]) : (j==tam-1)? printf("%d}", matriz[i][j]) : printf("%d,", matriz[i][j]);
+        }
+        if (eh_vazio) printf("Vazio.\n");
+        else printf("\n");
+    }
 }
 
 int entradaUsuario (int inicioIntervalo, int fimIntervalo,int *entradaNum) {
@@ -35,7 +70,7 @@ int entradaUsuario (int inicioIntervalo, int fimIntervalo,int *entradaNum) {
             break;
         } else {
             if (inicioIntervalo == fimIntervalo) {
-                printf("Opcao invalida. Unica opcao valida eh %i.\n", fimIntervalo);
+                printf("Opcao invalida. Unica opcao disponível é %i.\n", fimIntervalo);
                 limpaBuffer();
             }
             else {
@@ -45,12 +80,6 @@ int entradaUsuario (int inicioIntervalo, int fimIntervalo,int *entradaNum) {
         }
     }
     return *entradaNum;
-}
-
-int tamanho(int vetor[]){
-    int contador = 0;
-    for (int i = 0; vetor[i] != 0; i++) contador++;
-    return contador;
 }
 
 int buscaSeq(int vetor[], int num){
